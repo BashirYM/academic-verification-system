@@ -1,17 +1,15 @@
-from flask import Blueprint, request, jsonify
-from .controller import waec_request_handler, neco_request_handler,nysc_request_handler
-from time import sleep
+# backend/app/routes.py
+from flask import Blueprint, request
+from .controller import waec_request_handler, neco_request_handler, nysc_request_handler
 
-verification_routes = Blueprint('verification_routes', __name__)
+verification_routes = Blueprint('verification_routes', __name__, url_prefix='/api')
 
 @verification_routes.route('/waec', methods=['POST'])
 def verify_waec():
-    sleep(3)
     return waec_request_handler(request)
 
-@verification_routes.route('/neco', methods=['GET', 'POST'])
+@verification_routes.route('/neco', methods=['POST'])
 def verify_neco():
-    sleep(3)
     return neco_request_handler(request)
 
 @verification_routes.route('/nysc', methods=['POST'])

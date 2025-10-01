@@ -36,19 +36,6 @@ const Form = ({
     handleSubjectChange(id, name, value);
   };
 
-  // const addCustomSubject = () => {
-  //   if (newSubject && newGrade) {
-  //     setSubjects((prevSubjects) => [...prevSubjects, {
-  //       id: uuidv4(), subject: newSubject, grade: newGrade,
-  //     }]);
-  //     handleSelectChange();
-  //     setNewSubject(''); // Clear the input after adding
-  //     setNewGrade(''); // Clear the grade input
-  //   } else {
-  //     toast.error('Please fill both subject and grade before adding.');
-  //   }
-  // };
-
   const getAvailableSubjects = (currentSubjectId) => {
     const selectedSubjects = subjects
       .filter((subj) => subj.id !== currentSubjectId)
@@ -252,36 +239,6 @@ const Form = ({
             ))}
           </div>
         </div>
-        {/* <div className="mt-4">
-          <h4 className="text-md font-bold text-gray-700 mb-2">Add Custom Subject</h4>
-          <div className="flex space-x-2">
-            <input
-              type="text"
-              placeholder="Subject"
-              value={newSubject}
-              onChange={(e) => setNewSubject(e.target.value)}
-              className={`w-1/2 ${inputClassName}`}
-            />
-            <select
-              value={newGrade}
-              onChange={(e) => setNewGrade(e.target.value)}
-              className={`w-1/4 ${selectClassName}`}
-            >
-              <option value="">Grade</option>
-              {['N/A', 'A1', 'B2', 'B3', 'C4', 'C5', 'C6', 'D7', 'E8', 'F9'].map((grade) => (
-                <option key={grade} value={grade}>{grade}</option>
-              ))}
-            </select>
-            <button
-              type="button"
-              onClick={addCustomSubject}
-              className="w-1/6 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600
-              transition duration-300 shadow-md font-bold"
-            >
-              Add
-            </button>
-          </div>
-        </div> */}
         <button
           type="submit"
           disabled={isLoading}
