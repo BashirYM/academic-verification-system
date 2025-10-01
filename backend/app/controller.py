@@ -5,8 +5,9 @@ from .service import (
     verify_document_dummy,
     verify_neco_dummy
 )
-from .nysc_service import verify_nysc  # 👈 real scraper
+from .nysc_service import verify_nysc_dummy  # 👈 real scraper
 from .validate_info import validate
+from .service import compare_fields
 import re
 
 
@@ -32,23 +33,23 @@ def validate_request(data):
     return True, None
 
 
-def validate_nysc_request(data):
-    """Validation tailored for NYSC inputs"""
-    required_fields = ['callup_no', 'certificate_no', 'dob']
+# def validate_nysc_request(data):
+#     """Validation tailored for NYSC inputs"""
+#     required_fields = ['callup_no', 'certificate_no', 'dob']
 
-    missing_fields = [field for field in required_fields if not data.get(field)]
-    if missing_fields:
-        return False, f"Missing fields: {', '.join(missing_fields)}"
+#     missing_fields = [field for field in required_fields if not data.get(field)]
+#     if missing_fields:
+#         return False, f"Missing fields: {', '.join(missing_fields)}"
 
-    # Basic format checks
-    if len(data['callup_no']) < 5:
-        return False, "Invalid Call-up Number."
-    if len(data['certificate_no']) < 5:
-        return False, "Invalid Certificate Number."
-    if not re.match(r'^\d{4}-\d{2}-\d{2}$', data['dob']):
-        return False, "DOB must be in YYYY-MM-DD format."
+#     # Basic format checks
+#     if len(data['callup_no']) < 5:
+#         return False, "Invalid Call-up Number."
+#     if len(data['certificate_no']) < 5:
+#         return False, "Invalid Certificate Number."
+#     if not re.match(r'^\d{4}-\d{2}-\d{2}$', data['dob']):
+#         return False, "DOB must be in YYYY-MM-DD format."
 
-    return True, None
+#     return True, None
 
 
 def generate_mismatch_response(user_data, parsed_data, validated_data, exam_type="WAEC"):
@@ -82,124 +83,124 @@ def generate_mismatch_response(user_data, parsed_data, validated_data, exam_type
 
 
 def waec_request_handler(request):
-    """Handle WAEC requests"""
     try:
         data = request.json
-        is_valid, validation_error = validate_request(data)
-        if not is_valid:
-            return jsonify({"error": validation_error}), 400
-
         result, status_code = verify_document_dummy()
-        if status_code == 200:
-            parsed_data = result.get_json()['content']['message']
-            validated_data = validate(data, parsed_data)
 
-            if validated_data['Info Match'] and validated_data['Subj Match']:
-                return jsonify({"success": True, "content": parsed_data}), status_code
-            else:
-                return generate_mismatch_response(data, parsed_data, validated_data)
+        if status_code == 200:
+            parsed_data = result.get_json()["content"]["message"]
+            mismatches = compare_fields(data, parsed_data, "WAEC")
+
+            if mismatches:
+                return jsonify({
+                    "success": False,
+                    "error": "Verification failed",
+                    "mismatches": mismatches
+                }), 422
+
+            return jsonify({
+                "success": True,
+                "content": parsed_data
+            }), 200
+
         else:
-            error = result.get_json()['content']['error_message']
-            return jsonify({"success": False, "content": error}), status_code
+            return jsonify({"success": False, "error": "Backend error"}), status_code
 
     except Exception as e:
-        print(f"Error in waec_request_handler: {e}")
-        return jsonify({"error": "An unexpected error occurred"}), 500
-
+        print(f"Error in WAEC handler: {e}")
+        return jsonify({"error": "Unexpected error"}), 500
 
 def neco_request_handler(request):
-    """Handle NECO requests"""
     try:
         data = request.json
-        is_valid, validation_error = validate_request(data)
-        if not is_valid:
-            return jsonify({"error": validation_error}), 400
-
         result, status_code = verify_neco_dummy()
-        if status_code == 200:
-            parsed_data = result.get_json()['content']['message']
-            validated_data = validate(data, parsed_data)
 
-            if validated_data['Info Match'] and validated_data['Subj Match']:
-                return jsonify({"success": True, "content": parsed_data}), status_code
-            else:
-                return generate_mismatch_response(data, parsed_data, validated_data, "NECO")
+        if status_code == 200:
+            parsed_data = result.get_json()["content"]["message"]
+            mismatches = compare_fields(data, parsed_data, "NECO")
+
+            if mismatches:
+                return jsonify({
+                    "success": False,
+                    "error": "Verification failed",
+                    "mismatches": mismatches
+                }), 422
+
+            return jsonify({
+                "success": True,
+                "content": parsed_data
+            }), 200
+
         else:
-            error = result.get_json()['content']['error_message']['info']
-            message = result.get_json()['content']['error_message']['message']
-            return jsonify({"success": False, "message": message, "content": error}), status_code
+            return jsonify({"success": False, "error": "Backend error"}), status_code
 
     except Exception as e:
-        print(f"Error in neco_request_handler: {e}")
-        return jsonify({"error": "An unexpected error occurred"}), 500
-
-
-# ================= NYSC ====================
-def verify_nysc_dummy(callup_no, certificate_no, dob):
-    """Dummy NYSC verifier for testing without portal access"""
-    return jsonify({
-        "content": {
-            "message": {
-                "Name": "John Doe",
-                "Call-up Number": callup_no,
-                "Certificate Number": certificate_no,
-                "Date of Birth": dob,
-                "Status": "Valid"
-            }
-        }
-    }), 200
-
+        print(f"Error in NECO handler: {e}")
+        return jsonify({"error": "Unexpected error"}), 500
 
 def nysc_request_handler(request):
-    """Handle NYSC requests (dummy + scraper ready)"""
     try:
-        data = request.json
-        is_valid, validation_error = validate_nysc_request(data)
-        if not is_valid:
-            return jsonify({"error": validation_error}), 400
-
+        data = request.get_json() or {}
         callup_no = data.get("callup_no")
         certificate_no = data.get("certificate_no")
         dob = data.get("dob")
 
-        # Swap to verify_nysc() when portal scraping is active
-        result, status_code = verify_nysc_dummy(callup_no, certificate_no, dob)
+        if not (callup_no or certificate_no):
+            return jsonify({"success": False, "error": "Provide callup_no or certificate_no"}), 400
 
-        if status_code == 200:
-            parsed_data = result.get_json()['content']['message']
-            validated_data = validate(data, parsed_data)
+        # Call scraper (may return { success: True/False, data: {...} or error: ... })
+        result = verify_nysc(callup_no=callup_no, certificate_no=certificate_no, dob=dob)
 
-            if validated_data['Info Match']:
-                return jsonify({"success": True, "content": parsed_data}), status_code
-            else:
-                return generate_mismatch_response(data, parsed_data, validated_data, "NYSC")
-        else:
-            error = result.get_json()['content']['error_message']
-            return jsonify({"success": False, "content": error}), status_code
+        if not result.get("success"):
+            # propagate helpful message and raw for debugging if present
+            return jsonify({
+                "success": False,
+                "error": result.get("error", "NYSC verification failed"),
+                "raw": result.get("raw")
+            }), 400
+
+        # result["data"] is the parsed dict from the scraper. Normalize into expected shape:
+        parsed = result.get("data", {})
+
+        # Build a consistent parsed_data structure matching other endpoints
+        parsed_data = {
+            "candidate_info": {
+                # keys chosen to match what compare_fields expects; adapt if needed
+                "Name": parsed.get("Name") or parsed.get("FullName") or parsed.get("name"),
+                "Call-up Number": parsed.get("Call-up Number") or parsed.get("CallupNumber") or callup_no,
+                "Certificate Number": parsed.get("Certificate Number") or parsed.get("CertificateNumber") or certificate_no,
+                "Date of Birth": parsed.get("Date of Birth") or parsed.get("DOB") or dob,
+                "Status": parsed.get("Status") or parsed.get("VerificationStatus") or "Unknown",
+            },
+            # NYSC has no 'subject_grades' or 'card_info' — leave empty array / None for compatibility
+            "subject_grades": [],
+            "card_info": None,
+        }
+
+        mismatches = compare_fields(
+            # adapt the fields coming from frontend into expected keys for compare_fields
+            {
+                "callup_no": callup_no,
+                "certificate_no": certificate_no,
+                "dob": dob,
+            },
+            parsed_data,
+            "NYSC"
+        )
+
+        if mismatches:
+            return jsonify({
+                "success": False,
+                "error": "Verification failed",
+                "mismatches": mismatches,
+                "content": parsed_data
+            }), 422
+
+        return jsonify({
+            "success": True,
+            "content": parsed_data
+        }), 200
 
     except Exception as e:
         print(f"Error in nysc_request_handler: {e}")
-        return jsonify({"error": "An unexpected error occurred"}), 500
-
-# def nysc_request_handler(request):
-#     try:
-#         data = request.get_json()
-
-#         callup_no = data.get("callup_no")
-#         certificate_no = data.get("certificate_no")
-#         dob = data.get("dob")
-
-#         if not callup_no or not certificate_no or not dob:
-#             return jsonify({"success": False, "error": "Missing required fields"}), 400
-
-#         result = verify_nysc(
-#             callup_no=callup_no,
-#             certificate_no=certificate_no,
-#             dob=dob
-#         )
-
-#         return jsonify(result), 200
-
-#     except Exception as e:
-#         return jsonify({"success": False, "error": str(e)}), 500
-
+        return jsonify({"error": "Unexpected error"}), 500

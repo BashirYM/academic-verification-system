@@ -11,11 +11,61 @@ import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter, Retry
 import logging
+from flask import jsonify
 import re
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+DUMMY_NYSC = {
+    "name": "Bashir Mustapha",
+    "dob": "2002-02-26",
+    "callup_no": "NYSC2025ABC123",
+    "certificate_no": "CERT123456",
+    "status": "Verified ✅ (dummy)",
+}
+
+def verify_nysc_dummy(callup_no=None, certificate_no=None, dob=None):
+    """Return dummy NYSC verification for testing."""
+
+    mismatches = {}
+
+    if callup_no != DUMMY_NYSC["callup_no"]:
+        mismatches["callup_no"] = "Call-up Number does not match"
+    if certificate_no != DUMMY_NYSC["certificate_no"]:
+        mismatches["certificate_no"] = "Certificate Number does not match"
+    if dob != DUMMY_NYSC["dob"]:
+        mismatches["dob"] = "Date of Birth does not match"
+
+    if mismatches:
+        return jsonify({
+            "http_code": 422,
+            "success": False,
+            "content": {
+                "error_title": "Verification Failed",
+                "error_message": "Some fields do not match",
+                "mismatches": mismatches
+            }
+        }), 422
+
+    #  All matched
+    return jsonify({
+        "http_code": 200,
+        "success": True,
+        "content": {
+            "title": "NYSC CERTIFICATE VERIFICATION",
+            "message": {
+                "candidate_info": {
+                    "name": DUMMY_NYSC["name"],
+                    "dob": DUMMY_NYSC["dob"],
+                    "callup_no": DUMMY_NYSC["callup_no"],
+                    "certificate_no": DUMMY_NYSC["certificate_no"],
+                    "status": DUMMY_NYSC["status"],
+                }
+            },
+            "verified": True
+        }
+    }), 200
 # ======= CONFIGURE THESE AFTER INSPECTING THE NYSC PAGE =======
 # Example placeholder URLS that commonly appear—replace with actual action URL
 NYSC_VERIFY_URL = "https://portal.nysc.org.ng/VerifyCertificate"  # ← REPLACE with actual form action

@@ -46,11 +46,11 @@ function App() {
     'CATERING CRAFT PRACTICE',
   ].sort();
 
+  // inside frontend/src/components/App.jsx (replace existing handleSubmit)
   const handleSubmit = async (event, formData, formType) => {
     event.preventDefault();
     setResult(null);
     setIsLoading(true);
-
     let url;
     if (formType === 'WAEC') {
       url = 'http://localhost:5000/api/waec';
@@ -63,14 +63,33 @@ function App() {
     try {
       const response = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(formData),
       });
-      const data = await response.json();
-      setResult(data);
+
+      // Always attempt to parse JSON body from backend, regardless of HTTP code
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+      // show a toast for obvious errors, but still present the modal with details
+        if (response.status === 422) {
+        // mismatch details expected
+          toast.warning('Verification completed with mismatches. See details.');
+        } else if (response.status >= 500) {
+          toast.error('Server error during verification.');
+        } else if (response.status === 400) {
+          toast.error(data?.error || 'Bad request.');
+        }
+      }
+
+      setResult(data || { success: false, error: 'No response data from server.' });
       setIsModalOpen(true);
     } catch (err) {
       toast.error('Verification failed. Please try again.');
+      setResult({ success: false, error: 'Network or client error.' });
+      setIsModalOpen(true);
     } finally {
       setIsLoading(false);
     }

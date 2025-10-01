@@ -243,56 +243,66 @@ $(document).on("contextmenu",function(e){
 </body></html>
 
 '''
-
-neco_content = {
-    "content": {
-        "barcode": "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAQAAAABYmaj5AAAA7UlEQVR42tXUu42EMBAG4B85cEgDlmjDmVvCDRiugd2WnLkNJBqwMwfWzc0+dEtihvBuIr4E/fMA0KEy/rAyEByViEFSoTZbMyZ+kBRNQPMJ/oJmi+WaljSVKyJ+/X7/JOuK+/PJ+E+3XT2qNn+YYE8ZBjw2u99FOZWtokqyrAlug1Zfkqiqb7SgX/2dKm7BqRVmkFTqlLHnd+pTRUBjjK8sp0rTClrtVERF4ytPzSySuErl5hRJ4t3O+rHeQRLfS7C8W1VEPa+Vs4wX5KO66fdXJYgwu82L4ruODfhN1tXzrreAw5V39F/+YEf9AOeknEkMPpt/AAAAAElFTkSuQmCC",
-        "biometrics": None,
-        "candidate_number": None,
-        "centre_code": "0310101",
-        "centre_name": "GREAT HEIGHTS ACADEMY KADO ESTATE, ABUJA.",
-        "debt": None,
-        "dob": "10/01/2007",
-        "exam_type": "INTERNAL",
-        "exam_year": "2024",
-        "full_name": "SANUSI FATIMA BUBA",
-        "gender": "F",
-        "id": 34354874,
-        "num_of_sub": 9,
-        "reason": None,
-        "reg_number": "2410018877GI",
-        "show_dob": True,
-        "show_photo": True,
-        "sub1_grade": "B3",
-        "sub1_name": "English Language",
-        "sub1_remark": "GOOD",
-        "sub2_grade": "E8",
-        "sub2_name": "General Mathematics",
-        "sub2_remark": "PASS",
-        "sub3_grade": "B2",
-        "sub3_name": "Civic Education",
-        "sub3_remark": "VERY GOOD",
-        "sub4_grade": "A1",
-        "sub4_name": "Agricultural Science",
-        "sub4_remark": "EXCELLENT",
-        "sub5_grade": "B3",
-        "sub5_name": "Islamic Studies",
-        "sub5_remark": "GOOD",
-        "sub6_grade": "B3",
-        "sub6_name": "Government",
-        "sub6_remark": "GOOD",
-        "sub7_grade": "C4",
-        "sub7_name": "Economics",
-        "sub7_remark": "CREDIT",
-        "sub8_grade": "C4",
-        "sub8_name": "Literature in English",
-        "sub8_remark": "CREDIT",
-        "sub9_grade": "B2",
-        "sub9_name": "Catering Craft Practice",
-        "sub9_remark": "VERY GOOD"
-    },
-    "success": True
+DUMMY_CANDIDATE = {
+    "full_name": "Bashir Mustapha",
+    "dob": "2002-02-26",
+    "exam_year": "2024",
+    "exam_type": "INTERNAL",
+    "candidate_number": "4220416015",
+    "centre_name": "Demo Secondary School, Abuja",
+    "certificate_no": "CERT123456",
+    "callup_no": "NYSC2025ABC123",
 }
+
+# neco_content = {
+#     "content": {
+#         "barcode": "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAQAAAABYmaj5AAAA7UlEQVR42tXUu42EMBAG4B85cEgDlmjDmVvCDRiugd2WnLkNJBqwMwfWzc0+dEtihvBuIr4E/fMA0KEy/rAyEByViEFSoTZbMyZ+kBRNQPMJ/oJmi+WaljSVKyJ+/X7/JOuK+/PJ+E+3XT2qNn+YYE8ZBjw2u99FOZWtokqyrAlug1Zfkqiqb7SgX/2dKm7BqRVmkFTqlLHnd+pTRUBjjK8sp0rTClrtVERF4ytPzSySuErl5hRJ4t3O+rHeQRLfS7C8W1VEPa+Vs4wX5KO66fdXJYgwu82L4ruODfhN1tXzrreAw5V39F/+YEf9AOeknEkMPpt/AAAAAElFTkSuQmCC",
+#         "biometrics": None,
+#         "candidate_number": None,
+#         "centre_code": "0310101",
+#         "centre_name": "GREAT HEIGHTS ACADEMY KADO ESTATE, ABUJA.",
+#         "debt": None,
+#         "dob": "10/01/2007",
+#         "exam_type": "INTERNAL",
+#         "exam_year": "2024",
+#         "full_name": "SANUSI FATIMA BUBA",
+#         "gender": "F",
+#         "id": 34354874,
+#         "num_of_sub": 9,
+#         "reason": None,
+#         "reg_number": "2410018877GI",
+#         "show_dob": True,
+#         "show_photo": True,
+#         "sub1_grade": "B3",
+#         "sub1_name": "English Language",
+#         "sub1_remark": "GOOD",
+#         "sub2_grade": "E8",
+#         "sub2_name": "General Mathematics",
+#         "sub2_remark": "PASS",
+#         "sub3_grade": "B2",
+#         "sub3_name": "Civic Education",
+#         "sub3_remark": "VERY GOOD",
+#         "sub4_grade": "A1",
+#         "sub4_name": "Agricultural Science",
+#         "sub4_remark": "EXCELLENT",
+#         "sub5_grade": "B3",
+#         "sub5_name": "Islamic Studies",
+#         "sub5_remark": "GOOD",
+#         "sub6_grade": "B3",
+#         "sub6_name": "Government",
+#         "sub6_remark": "GOOD",
+#         "sub7_grade": "C4",
+#         "sub7_name": "Economics",
+#         "sub7_remark": "CREDIT",
+#         "sub8_grade": "C4",
+#         "sub8_name": "Literature in English",
+#         "sub8_remark": "CREDIT",
+#         "sub9_grade": "B2",
+#         "sub9_name": "Catering Craft Practice",
+#         "sub9_remark": "VERY GOOD"
+#     },
+#     "success": True
+# }
 
 
 # Helper function to build the request URL
@@ -368,16 +378,35 @@ def handle_response(response, redirect_url=None):
     
 
 def verify_document_dummy():
-    # Dummy data to simulate the response
+    """Dummy WAEC response"""
     return jsonify({
         "http_code": 200,
         "success": True,
         "content": {
             "title": "WAECDIRECT ONLINE - RESULTS",
-            "message": parse_html_response(html_content),
-            "verified": True,
+            "message": {
+                "candidate_info": {
+                    "name": DUMMY_CANDIDATE["full_name"],
+                    "dob": DUMMY_CANDIDATE["dob"],
+                    "exam_year": DUMMY_CANDIDATE["exam_year"],
+                    "centre": DUMMY_CANDIDATE["centre_name"],
+                    "candidate_number": DUMMY_CANDIDATE["candidate_number"],
+                },
+                "subject_grades": [
+                    {"subject": "English Language", "grade": "B3"},
+                    {"subject": "Mathematics", "grade": "B2"},
+                    {"subject": "Biology", "grade": "B3"},
+                    {"subject": "Chemistry", "grade": "B2"},
+                    {"subject": "Physics", "grade": "B3"},
+                    {"subject": "Agricultural Science", "grade": "A1"},
+                    {"subject": "Civic Education", "grade": "B2"},
+                    {"subject": "Economics", "grade": "C4"},
+                    {"subject": "Geography", "grade": "B3"},
+                ],
+                "card_info": {"uses_left": "4 of 5"}
+            },
+            "verified": True
         }
-
     }), 200
 
 def verify_neco_dummy():
@@ -438,7 +467,36 @@ def verify_neco_result(CandidateNo, ExamYear, pin, ExamName):
                 "error_message": str(e)
             }
         }), 500
-
+def verify_neco_dummy():
+    """Dummy NECO response"""
+    return jsonify({
+        "http_code": 200,
+        "success": True,
+        "content": {
+            "title": "NECO RESULTS",
+            "message": {
+                "candidate_info": {
+                    "name": DUMMY_CANDIDATE["full_name"],
+                    "dob": DUMMY_CANDIDATE["dob"],
+                    "exam_year": DUMMY_CANDIDATE["exam_year"],
+                    "candidate_number": "2410018877GI",
+                    "centre": DUMMY_CANDIDATE["centre_name"],
+                },
+                "subject_grades": [
+                    {"subject": "English Language", "grade": "B3"},
+                    {"subject": "Mathematics", "grade": "C5"},
+                    {"subject": "Biology", "grade": "B2"},
+                    {"subject": "Chemistry", "grade": "C4"},
+                    {"subject": "Physics", "grade": "C4"},
+                    {"subject": "Agricultural Science", "grade": "A1"},
+                    {"subject": "Civic Education", "grade": "B3"},
+                    {"subject": "Economics", "grade": "C4"},
+                    {"subject": "Literature in English", "grade": "B2"},
+                ],
+            },
+            "verified": True
+        }
+    }), 200
 
 def parse_failed_request(redirect_url):
     # Parse the redirect URL to extract error details
@@ -455,3 +513,51 @@ def parse_failed_request(redirect_url):
         "error_title": error_title or "Unknown Error",
         "error_message": error_message or "An unknown error occurred."
     }
+# backend/app/service.py
+
+def compare_fields(user_data, parsed_data, exam_type="WAEC"):
+    mismatches = {}
+
+    if exam_type in ("WAEC", "NECO"):
+        # adjust keys depending on your parsed_data keys
+        candidate_info = parsed_data.get("candidate_info", {})
+        # Candidate number, exam year, name etc.
+        if user_data.get("CandidateNo") and user_data.get("CandidateNo") != candidate_info.get("Exam Number") and user_data.get("CandidateNo") != candidate_info.get("candidate_no"):
+            mismatches["CandidateNo"] = "Candidate Number does not match"
+
+        if user_data.get("ExamYear") and str(user_data.get("ExamYear")) != str(candidate_info.get("Exam Year") or candidate_info.get("exam_year")):
+            mismatches["ExamYear"] = "Exam Year does not match"
+
+        if user_data.get("Name") and user_data.get("Name").strip().lower() != (candidate_info.get("Name") or candidate_info.get("name") or "").strip().lower():
+            mismatches["Name"] = "Candidate Name does not match"
+
+        # PIN or card_info check for WAEC
+        if exam_type == "WAEC":
+            card_info = parsed_data.get("card_info") or {}
+            if user_data.get("PIN") and user_data.get("PIN") != card_info.get("pin"):
+                mismatches["PIN"] = "PIN does not match"
+
+        # Subjects
+        user_subjects = {s["subject"]: s["grade"] for s in user_data.get("subjects", [])}
+        parsed_subjects = {s["subject"]: s["grade"] for s in parsed_data.get("subject_grades", [])}
+        subj_mismatches = {}
+        for subj, grade in user_subjects.items():
+            parsed_grade = parsed_subjects.get(subj)
+            if parsed_grade is None:
+                subj_mismatches[subj] = {"expected": "N/A", "received": grade}
+            elif parsed_grade != grade:
+                subj_mismatches[subj] = {"expected": parsed_grade, "received": grade}
+        if subj_mismatches:
+            mismatches["Subj Mismatches"] = subj_mismatches
+
+    elif exam_type == "NYSC":
+        candidate_info = parsed_data.get("candidate_info", {})
+        # Map keys that nysc handler provides
+        if user_data.get("callup_no") and user_data.get("callup_no") != (candidate_info.get("Call-up Number") or candidate_info.get("Callup Number") or ""):
+            mismatches["callup_no"] = "Call-up Number does not match"
+        if user_data.get("certificate_no") and user_data.get("certificate_no") != (candidate_info.get("Certificate Number") or candidate_info.get("CertificateNumber") or ""):
+            mismatches["certificate_no"] = "Certificate Number does not match"
+        if user_data.get("dob") and user_data.get("dob") != (candidate_info.get("Date of Birth") or candidate_info.get("DOB") or ""):
+            mismatches["dob"] = "Date of Birth does not match"
+
+    return mismatches
