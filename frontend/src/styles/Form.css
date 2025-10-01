@@ -1,0 +1,77 @@
+/* Form Styles */
+.verification-form {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  background-color: #f7ebebeb;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Button Styles */
+/* Compact Button Styles */
+.btn-action {
+  color: #fff; /* Text color */
+  border: none; /* Remove border */
+  font-size: 14px; /* Smaller font size */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  background-color: #0e91ce;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+  display: inline-flex; /* Align icons */
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action:hover {
+  background-color: #10465e; /* Darker shade on hover */
+}
+
+.btn-action:active {
+  transform: scale(0.98); /* Slight scale down on click */
+}
+
+.btn-action:disabled {
+  background-color: #BDC3C7; /* Gray color for disabled state */
+  cursor: not-allowed; /* Indicate button cannot be clicked */
+}
+
+/* Adjust positioning of buttons */
+.btn-container {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+.d-inline a {
+  color: #007bff;
+}
+
+.d-inline a:hover {
+  text-decoration: underline;
+}
