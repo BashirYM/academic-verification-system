@@ -343,7 +343,7 @@ def verify_waec_dummy(exam_number: str, exam_year: str, pin: str, serial: str) -
             "Name": "Bashir Mustapha",
             "Exam Number": "1234567890",
             "Exam Year": str(exam_year),
-            "Centre Name": "ABC Senior Secondary School"
+            "Centre Name": "Air Force School"
         },
         "subject_grades": _sample_subjects_for_bashir(),
         "card_info": {
@@ -364,53 +364,11 @@ def verify_neco_dummy(exam_number: str, exam_year: str, pin: str, exam_name: str
             "Name": "Bashir Mustapha",
             "Exam Number": "1234567890",
             "Exam Year": str(exam_year),
-            "Centre Name": "ABC Senior Secondary School"
+            "Centre Name": "Air Force School"
         },
         "subject_grades": _sample_subjects_for_bashir()
     }
     return parsed, 200
-
-# # --- NYSC verification (scraper + dummy fallback) ---
-# def verify_nysc_wrapper(callup_no: str = None, certificate_no: str = None, dob: str = None) -> Tuple[Dict[str,Any], int]:
-#     """
-#     Uses nysc_scraper (from nysc_service.py). If scraper returns success, convert parsed page to
-#     the standardized parsed_dict format. If scraper fails (portal down), use a dummy response
-#     constructed from DUMMY_CANDIDATE.
-#     Returns (parsed_dict, http_status_code)
-#     """
-#     try:
-#         # call actual scraper function (it returns dict with keys 'success','data' or 'error')
-#         result = nysc_scraper(callup_no=callup_no, certificate_no=certificate_no, dob=dob)
-#         if result.get('success'):
-#             data = result.get('data') or {}
-#             # Transform data into our standardized format
-#             parsed = {
-#                 "candidate_info": {
-#                     "Name": data.get("Name") or data.get("FullName") or DUMMY_CANDIDATE['candidate_info']['Name'],
-#                     "DateOfBirth": data.get("DateOfBirth") or dob or DUMMY_CANDIDATE['candidate_info']['DateOfBirth'],
-#                     "CallUpNumber": data.get("Call-up Number") or callup_no or "N/A",
-#                     "CertificateNumber": data.get("Certificate Number") or certificate_no or "N/A",
-#                 },
-#                 "subject_grades": [],  # NYSC doesn't have subject grades; leave empty
-#             }
-#             return parsed, 200
-#         else:
-#             # Scraper returned error -> fallback to dummy (controlled)
-#             logger.info("NYSC scraper failed or blocked; returning dummy for offline testing.")
-#             parsed = {
-#                 "candidate_info": {
-#                     "Name": DUMMY_CANDIDATE['candidate_info']['Name'],
-#                     "DateOfBirth": DUMMY_CANDIDATE['candidate_info']['DateOfBirth'],
-#                     "CallUpNumber": certificate_no or "DUMMY_CALLUP",
-#                     "CertificateNumber": certificate_no or "DUMMY_CERT",
-#                 },
-#                 "subject_grades": [],
-#             }
-#             return parsed, 200
-#     except Exception as e:
-#         logger.exception("Unexpected error in verify_nysc_wrapper")
-#         # On exception return dummy shape with 500 to surface error to controller
-#         return {"error": str(e)}, 500
     
 def verify_neco_result(CandidateNo, ExamYear, pin, ExamName):
     try:
@@ -475,51 +433,4 @@ def parse_failed_request(redirect_url):
         "error_title": error_title or "Unknown Error",
         "error_message": error_message or "An unknown error occurred."
     }
-# backend/app/service.py
 
-# def compare_fields(user_data, parsed_data, exam_type="WAEC"):
-#     mismatches = {}
-
-#     if exam_type in ("WAEC", "NECO"):
-#         # adjust keys depending on your parsed_data keys
-#         candidate_info = parsed_data.get("candidate_info", {})
-#         # Candidate number, exam year, name etc.
-#         if user_data.get("CandidateNo") and user_data.get("CandidateNo") != candidate_info.get("Exam Number") and user_data.get("CandidateNo") != candidate_info.get("candidate_no"):
-#             mismatches["CandidateNo"] = "Candidate Number does not match"
-
-#         if user_data.get("ExamYear") and str(user_data.get("ExamYear")) != str(candidate_info.get("Exam Year") or candidate_info.get("exam_year")):
-#             mismatches["ExamYear"] = "Exam Year does not match"
-
-#         if user_data.get("Name") and user_data.get("Name").strip().lower() != (candidate_info.get("Name") or candidate_info.get("name") or "").strip().lower():
-#             mismatches["Name"] = "Candidate Name does not match"
-
-#         # PIN or card_info check for WAEC
-#         if exam_type == "WAEC":
-#             card_info = parsed_data.get("card_info") or {}
-#             if user_data.get("PIN") and user_data.get("PIN") != card_info.get("pin"):
-#                 mismatches["PIN"] = "PIN does not match"
-
-#         # Subjects
-#         user_subjects = {s["subject"]: s["grade"] for s in user_data.get("subjects", [])}
-#         parsed_subjects = {s["subject"]: s["grade"] for s in parsed_data.get("subject_grades", [])}
-#         subj_mismatches = {}
-#         for subj, grade in user_subjects.items():
-#             parsed_grade = parsed_subjects.get(subj)
-#             if parsed_grade is None:
-#                 subj_mismatches[subj] = {"expected": "N/A", "received": grade}
-#             elif parsed_grade != grade:
-#                 subj_mismatches[subj] = {"expected": parsed_grade, "received": grade}
-#         if subj_mismatches:
-#             mismatches["Subj Mismatches"] = subj_mismatches
-
-#     elif exam_type == "NYSC":
-#         candidate_info = parsed_data.get("candidate_info", {})
-#         # Map keys that nysc handler provides
-#         if user_data.get("callup_no") and user_data.get("callup_no") != (candidate_info.get("Call-up Number") or candidate_info.get("Callup Number") or ""):
-#             mismatches["callup_no"] = "Call-up Number does not match"
-#         if user_data.get("certificate_no") and user_data.get("certificate_no") != (candidate_info.get("Certificate Number") or candidate_info.get("CertificateNumber") or ""):
-#             mismatches["certificate_no"] = "Certificate Number does not match"
-#         if user_data.get("dob") and user_data.get("dob") != (candidate_info.get("Date of Birth") or candidate_info.get("DOB") or ""):
-#             mismatches["dob"] = "Date of Birth does not match"
-
-#     return mismatches

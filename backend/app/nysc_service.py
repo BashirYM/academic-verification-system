@@ -123,7 +123,7 @@ def verify_nysc(callup_no: str = None, certificate_no: str = None, dob: str = No
             "Date of Birth": "2002-02-26",
             "Call-up Number": "NYSC2025ABC123",
             "Certificate Number": "CERT56789",
-            "Service Year": "2024"
+            "Service Year": "2025"
         }
     }
     # If user provided some keys, reflect them in response so comparisons work predictably.

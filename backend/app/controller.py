@@ -7,33 +7,9 @@ from .service import (
 )
 from typing import Dict, Any
 
-# from .nysc_service import verify_nysc_dummy  # 👈 real scraper
 from .nysc_service import verify_nysc  
-# from .validate_info import validate
-# from .service import compare_fields
 import re
-# from .utils import validate_request, compare_fields, generate_mismatch_response
 
-# def validate_request(data):
-#     """Function to validate the incoming WAEC/NECO data"""
-#     required_fields = ['PIN', 'ExamType', 'ExamYear', 'CandidateNo',
-#                        'ExamName', 'Name', 'subjects']
-
-#     missing_fields = [field for field in required_fields if not data.get(field)]
-#     if missing_fields:
-#         return False, f"Missing fields: {', '.join(missing_fields)}"
-
-#     if len(data['PIN']) not in range(10, 21) or not data['PIN'].isdigit():
-#         return False, "PIN must be a number between 10 and 20 digits."
-
-#     if len(data['CandidateNo']) not in range(10, 21):
-#         return False, "Candidate number must be between 10 and 15 digits."
-
-#     str_exam_year = str(data['ExamYear'])
-#     if not re.match(r'^\d{4}$', str_exam_year):
-#         return False, "Exam year must be a 4-digit number."
-
-#     return True, None
 def _validate_waec_neco_request(data: Dict[str, Any]) -> (bool, str):
     required = ['PIN', 'ExamType', 'ExamYear', 'CandidateNo', 'ExamName', 'Name', 'subjects', 'CentreName']
     missing = [f for f in required if not data.get(f)]
