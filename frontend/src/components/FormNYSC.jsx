@@ -1,26 +1,25 @@
 /// src/components/FormNYSC.jsx
-import React, { useState } from "react";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const FormNYSC = ({ onSubmit, isLoading }) => {
-  const [callupNo, setCallupNo] = useState("");
-  const [certificateNo, setCertificateNo] = useState("");
-  const [dob, setDob] = useState("");
+  const [callupNo, setCallupNo] = useState('');
+  const [certificateNo, setCertificateNo] = useState('');
+  const [dob, setDob] = useState('');
 
-  const inputClassName =
-    "mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500";
+  const inputClassName = 'mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500';
 
   const validateForm = () => {
     const errors = [];
-    if (!callupNo) errors.push("Call-Up Number");
-    if (!certificateNo) errors.push("Certificate Number");
-    if (!dob) errors.push("Date of Birth");
+    if (!callupNo) errors.push('Call-Up Number');
+    if (!certificateNo) errors.push('Certificate Number');
+    if (!dob) errors.push('Date of Birth');
     if (errors.length === 0) return true;
 
-    toast.error(`Please fill: ${errors.join(", ")}`);
+    toast.error(`Please fill: ${errors.join(', ')}`);
     return false;
   };
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!validateForm()) return;
@@ -31,8 +30,8 @@ const FormNYSC = ({ onSubmit, isLoading }) => {
       dob,
     };
 
-    toast.success("Request sent!");
-    onSubmit(event, formData, "NYSC");
+    toast.success('Request sent!');
+    onSubmit(event, formData, 'NYSC');
   };
 
   return (
@@ -101,14 +100,14 @@ const FormNYSC = ({ onSubmit, isLoading }) => {
           disabled:cursor-not-allowed disabled:transform-none
           ${
             isLoading
-              ? "bg-emerald-600/80 text-emerald-100"
-              : "bg-emerald-600 text-white hover:bg-emerald-700 active:bg-emerald-800"
+              ? 'bg-slate-500/80 text-slate-100'
+              : 'bg-slate-500 text-white hover:bg-slate-700 active:bg-slate-800'
           }
           shadow-lg hover:shadow-xl active:shadow-md
           overflow-hidden
         `}
       >
-        {isLoading ? "Validating..." : "Verify NYSC"}
+        {isLoading ? 'Validating...' : 'Verify Result'}
       </button>
     </form>
   );

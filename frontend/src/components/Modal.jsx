@@ -40,7 +40,7 @@ const Modal = ({
         {isLoading ? (
           <div className="flex justify-center items-center py-10">
             <svg
-              className="animate-spin h-8 w-8 text-emerald-600"
+              className="animate-spin h-8 w-8 text-slate-600"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

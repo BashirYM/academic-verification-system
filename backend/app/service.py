@@ -253,12 +253,12 @@ def _sample_subjects_for_bashir() -> List[Dict[str, str]]:
     return [
         {"subject": "MATHEMATICS", "grade": "A1"},
         {"subject": "ENGLISH LANGUAGE", "grade": "B2"},
-        {"subject": "BIOLOGY", "grade": "B3"},
+        {"subject": "COMPUTER STUDIES", "grade": "B3"},
         {"subject": "CHEMISTRY", "grade": "B3"},
         {"subject": "PHYSICS", "grade": "C4"},
         {"subject": "GEOGRAPHY", "grade": "C5"},
         {"subject": "ECONOMICS", "grade": "C5"},
-        {"subject": "LITERATURE", "grade": "C6"},
+        {"subject": "CIVIC EDUCATION", "grade": "C6"},
         {"subject": "AGRICULTURAL SCIENCE", "grade": "C6"},
     ]
 # Helper function to build the request URL
@@ -335,41 +335,93 @@ def handle_response(response, redirect_url=None):
 
 def verify_waec_dummy(exam_number: str, exam_year: str, pin: str, serial: str) -> Tuple[Dict[str, Any], int]:
     """
-    Dummy WAEC verifier. Returns parsed data for Bashir Mustapha if PIN/serial etc match
-    (used for development/testing when external WAEC API is unavailable).
+    Dummy WAEC verifier.
+    Candidate verification works ONLY if PIN + Serial match the sample.
+    Secondary fields are checked for mismatches.
     """
-    parsed = {
-        "candidate_info": {
-            "Name": "Bashir Mustapha",
-            "Exam Number": "1234567890",
-            "Exam Year": str(exam_year),
-            "Centre Name": "Air Force School"
-        },
-        "subject_grades": _sample_subjects_for_bashir(),
-        "card_info": {
-            "PIN": "111122223333",
-            "Serial": "SERIAL1234"
-        }
+    sample = {
+        "Name": "Bashir Mustapha",
+        "Exam Number": "1234567890",
+        "Exam Year": "2024",
+        "Centre Name": "Air Force School",
+        "PIN": "111122223333",
+        "Serial": "SERIAL1234"
     }
 
-    # For dummy mode: Always return the same parsed_data (200). The controller will compare.
-    return parsed, 200
+    # Primary validation (PIN + Serial must match)
+    if str(pin).strip() != sample["PIN"] or str(serial).strip() != sample["Serial"]:
+        return ({
+            "error": "Invalid PIN or Serial Number",
+            "expected": {"PIN": sample["PIN"], "Serial": sample["Serial"]},
+            "provided": {"PIN": pin, "Serial": serial}
+        }, 400)
+
+    # Secondary mismatches
+    mismatches = []
+    if str(exam_number).strip() != sample["Exam Number"]:
+        mismatches.append(f"Exam Number mismatch (expected '{sample['Exam Number']}', got '{exam_number}')")
+    if str(exam_year).strip() != sample["Exam Year"]:
+        mismatches.append(f"Exam Year mismatch (expected '{sample['Exam Year']}', got '{exam_year}')")
+
+    parsed = {
+        "candidate_info": {
+            "Name": sample["Name"],
+            "Exam Number": sample["Exam Number"],
+            "Exam Year": sample["Exam Year"],
+            "Centre Name": sample["Centre Name"]
+        },
+        "subject_grades": _sample_subjects_for_bashir(),
+        "card_info": {"PIN": sample["PIN"], "Serial": sample["Serial"]}
+    }
+
+    if mismatches:
+        parsed["mismatches"] = mismatches
+
+    return (parsed, 200)
 
 def verify_neco_dummy(exam_number: str, exam_year: str, pin: str, exam_name: str) -> Tuple[Dict[str, Any], int]:
     """
-    Dummy NECO verifier - returns same structured data for Bashir Mustapha.
+    Dummy NECO verifier.
+    Candidate verification works ONLY if PIN matches the sample.
     """
+    sample = {
+        "Name": "Bashir Mustapha",
+        "Exam Number": "1234567890",
+        "Exam Year": "2025",
+        "Centre Name": "Air Force School",
+        "PIN": "1111222233"
+    }
+
+    # Primary validation (PIN must match)
+    if str(pin).strip() != sample["PIN"]:
+        return ({
+            "error": "Invalid NECO Token",
+            "expected": {"PIN": sample["PIN"]},
+            "provided": {"PIN": pin}
+        }, 400)
+
+    # Secondary mismatches
+    mismatches = []
+    if str(exam_number).strip() != sample["Exam Number"]:
+        mismatches.append(f"Exam Number mismatch (expected '{sample['Exam Number']}', got '{exam_number}')")
+    if str(exam_year).strip() != sample["Exam Year"]:
+        mismatches.append(f"Exam Year mismatch (expected '{sample['Exam Year']}', got '{exam_year}')")
+
     parsed = {
         "candidate_info": {
-            "Name": "Bashir Mustapha",
-            "Exam Number": "1234567890",
-            "Exam Year": str(exam_year),
-            "Centre Name": "Air Force School"
+            "Name": sample["Name"],
+            "Exam Number": sample["Exam Number"],
+            "Exam Year": sample["Exam Year"],
+            "Centre Name": sample["Centre Name"]
         },
         "subject_grades": _sample_subjects_for_bashir()
     }
-    return parsed, 200
-    
+
+    if mismatches:
+        parsed["mismatches"] = mismatches
+
+    return (parsed, 200)
+
 def verify_neco_result(CandidateNo, ExamYear, pin, ExamName):
     try:
         # Construct the request URL

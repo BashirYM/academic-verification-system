@@ -241,8 +241,8 @@ def nysc_request_handler(request):
         # Build a user-like structure for comparison
         # We'll compare Name and Date of Birth primarily
         user_equivalent = {
-            "Name": data.get("name", ""),  # optional, frontend may not provide name
-            "CandidateNo": certificate_no or "",
+            "Name": data.get("name"),  # optional, frontend may not provide name
+            "CandidateNo": certificate_no,
             "ExamYear": "",  # not applicable
             "subjects": []  # not applicable for NYSC
         }

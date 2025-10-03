@@ -79,8 +79,13 @@ def verify_nysc(callup_no: str = None, certificate_no: str = None, dob: str = No
     returns a dummy result for the sample candidate.
     Return format: { "success": bool, "data": {...} | None, "error": str | None }
     """
-    # If the dev chooses to rely on live portal, they must set NYSC_VERIFY_URL and
-    # confirm the form field names. For this project the portal is frequently offline/blocked.
+    sample = {
+        "Name": "Bashir Mustapha",
+        "Date of Birth": "2002-02-26",
+        "Call-up Number": "NYSC2025ABC123",
+        "Certificate Number": "CERT56789",
+        "Service Year": "2025"
+    }
     try:
         # Attempt live POST if URL seems real (quick heuristic)
         if "portal.nysc" in NYSC_VERIFY_URL and "VerifyCertificate" not in NYSC_VERIFY_URL:
@@ -115,23 +120,47 @@ def verify_nysc(callup_no: str = None, certificate_no: str = None, dob: str = No
     except Exception:
         logger.exception("NYSC live verification attempt failed; returning dummy.")
 
-    # ---------- Dummy fallback (guarantees working behaviour for tests) ----------
-    # This ensures the rest of the system and UI can be tested even if NYSC portal is down.
-    dummy = {
-        "candidate_info": {
-            "Name": "Bashir Mustapha",
-            "Date of Birth": "2002-02-26",
-            "Call-up Number": "NYSC2025ABC123",
-            "Certificate Number": "CERT56789",
-            "Service Year": "2025"
-        }
+    provided = {
+        "Name": sample["Name"],  # Name is fixed in dummy (not entered by user)
+        "Date of Birth": dob,
+        "Call-up Number": callup_no,
+        "Certificate Number": certificate_no,
+        "Service Year": sample["Service Year"],
     }
-    # If user provided some keys, reflect them in response so comparisons work predictably.
-    if callup_no:
-        dummy["candidate_info"]["Call-up Number"] = callup_no
-    if certificate_no:
-        dummy["candidate_info"]["Certificate Number"] = certificate_no
-    if dob:
-        dummy["candidate_info"]["Date of Birth"] = dob
 
-    return {"success": True, "data": dummy}
+     # Primary validation: Call-up Number + Certificate Number must match
+    if str(callup_no).strip() != sample["Call-up Number"] or str(certificate_no).strip() != sample["Certificate Number"]:
+        return {
+            "success": False,
+            "error": "Call-up Number or Certificate Number cannot be found in database",
+            "expected": {
+                "Call-up Number": sample["Call-up Number"],
+                "Certificate Number": sample["Certificate Number"],
+            },
+            "provided": {
+                "Call-up Number": callup_no,
+                "Certificate Number": certificate_no,
+            },
+        }
+
+    # Secondary checks (report mismatches like WAEC/NECO)
+    mismatches = []
+    for field in ["Name", "Date of Birth", "Service Year"]:
+        expected = sample[field]
+        actual = provided.get(field)
+        if actual is None:
+            mismatches.append(f"{field} is missing")
+        elif str(actual).strip() != str(expected).strip():
+            mismatches.append(f"{field} mismatch (expected '{expected}', got '{actual}')")
+
+    if mismatches:
+        return {
+            "success": True,  # ✅ still success because IDs matched
+            "warning": "Some fields do not match",
+            "mismatches": mismatches,
+            "data": {"candidate_info": sample},
+        }
+
+    # All good
+    return {"success": True, "data": {"candidate_info": sample}}
+

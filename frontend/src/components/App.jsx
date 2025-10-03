@@ -82,13 +82,13 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-emerald-800">
+    <div className="min-h-screen flex flex-col bg-slate-800">
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-2/5 bg-emerald-800 text-white p-8">
-              <h2 className="text-3xl font-bold mb-6">CREDLY RESULTS</h2>
-              <h3 className="text-xl font-semibold mb-4">How it works:</h3>
+            <div className="w-full md:w-2/5 bg-slate-600 text-white p-8">
+              <h2 className="text-3xl font-bold mb-6">Welcome To VERIFYME</h2>
+              <h3 className="text-xl font-semibold mb-4">Follow the following to verfy:</h3>
               <ul className="list-disc list-inside space-y-2">
                 <li>Choose WAEC, NECO, or NYSC verification.</li>
                 <li>Fill in the required details in the form.</li>
@@ -96,7 +96,7 @@ function App() {
                 <li>View detailed verification and any mismatches.</li>
               </ul>
               <div className="mt-8 flex items-center space-x-4">
-                <h3 className="text-base font-semibold">Support: support@credly.com</h3>
+                <h3 className="text-base font-semibold">Support: support@VERIFYME.com</h3>
               </div>
             </div>
 
@@ -116,7 +116,7 @@ function App() {
                     onClick={() => setSelectedForm('WAEC')}
                     className={
                       selectedForm === 'WAEC'
-                        ? 'px-6 py-3 bg-emerald-600 text-white rounded-lg'
+                        ? 'px-6 py-3 bg-slate-500 text-white rounded-lg'
                         : 'px-6 py-3 bg-gray-100 rounded-lg'
                     }
                   >
@@ -127,7 +127,7 @@ function App() {
                     onClick={() => setSelectedForm('NECO')}
                     className={
                       selectedForm === 'NECO'
-                        ? 'px-6 py-3 bg-emerald-600 text-white rounded-lg'
+                        ? 'px-6 py-3 bg-slate-500 text-white rounded-lg'
                         : 'px-6 py-3 bg-gray-100 rounded-lg'
                     }
                   >
@@ -138,7 +138,7 @@ function App() {
                     onClick={() => setSelectedForm('NYSC')}
                     className={
                       selectedForm === 'NYSC'
-                        ? 'px-6 py-3 bg-emerald-600 text-white rounded-lg'
+                        ? 'px-6 py-3 bg-slate-500 text-white rounded-lg'
                         : 'px-6 py-3 bg-gray-100 rounded-lg'
                     }
                   >
@@ -179,7 +179,7 @@ function App() {
       </Modal>
 
       <footer className="text-white py-4 px-4 text-center mt-8">
-        <p>&copy; 2025 Credly. All rights reserved.</p>
+        <p>&copy; 2025 VERIFYME. All rights reserved.</p>
       </footer>
 
       <ToastContainer position="top-right" />

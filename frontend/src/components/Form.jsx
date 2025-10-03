@@ -245,13 +245,13 @@ const Form = ({
           className={`
             relative w-full px-6 py-4 rounded-lg font-semibold text-base
             transition-all duration-300 ease-in-out
-            focus:outline-none focus:ring-4 focus:ring-emerald-500/50
+            focus:outline-none focus:ring-4 focus:ring-slate-500/50
             transform hover:-translate-y-0.5 active:translate-y-0
             disabled:cursor-not-allowed disabled:transform-none
             ${
               isLoading
-                ? 'bg-emerald-600/80 text-emerald-100'
-                : 'bg-emerald-600 text-white hover:bg-emerald-700 active:bg-emerald-800'
+                ? 'bg-slate-500/80 text-slate-100'
+                : 'bg-slate-500 text-white hover:bg-slate-700 active:bg-slate-800'
             }
             shadow-lg hover:shadow-xl active:shadow-md
             overflow-hidden
@@ -290,7 +290,7 @@ const Form = ({
 
           {/* Background animation effect */}
           <div className={`
-            absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/10 to-emerald-500/0
+            absolute inset-0 bg-gradient-to-r from-slate-500/0 via-slate-500/10 to-slate-500/0
             transform transition-transform duration-1000
             ${isLoading ? 'translate-x-0 animate-shine' : '-translate-x-full'}`}
           />
