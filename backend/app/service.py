@@ -341,10 +341,10 @@ def verify_waec_dummy(exam_number: str, exam_year: str, pin: str, serial: str) -
     """
     sample = {
         "Name": "Bashir Mustapha",
-        "Exam Number": "1234567890",
-        "Exam Year": "2024",
-        "Centre Name": "Air Force School",
-        "PIN": "111122223333",
+        "Exam Number": "4190905081",
+        "Exam Year": "2019",
+        "Centre Name": "Air Force Comprehensive School",
+        "PIN": "111222333",
         "Serial": "SERIAL1234"
     }
 
@@ -386,10 +386,10 @@ def verify_neco_dummy(exam_number: str, exam_year: str, pin: str, exam_name: str
     """
     sample = {
         "Name": "Bashir Mustapha",
-        "Exam Number": "1234567890",
-        "Exam Year": "2025",
-        "Centre Name": "Air Force School",
-        "PIN": "1111222233"
+        "Exam Number": "4190905081",
+        "Exam Year": "2019",
+        "Centre Name": "Air Force Comprehensive School",
+        "PIN": "111222333"
     }
 
     # Primary validation (PIN must match)

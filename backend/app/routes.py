@@ -13,5 +13,5 @@ def verify_neco():
     return neco_request_handler(request)
 
 @verification_routes.route('/nysc', methods=['POST'])
-def verify_nysc_route():
+def verify_nysc():
     return nysc_request_handler(request)

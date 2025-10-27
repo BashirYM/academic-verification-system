@@ -82,7 +82,7 @@ def verify_nysc(callup_no: str = None, certificate_no: str = None, dob: str = No
     sample = {
         "Name": "Bashir Mustapha",
         "Date of Birth": "2002-02-26",
-        "Call-up Number": "NYSC2025ABC123",
+        "Call-up Number": "NYSC2025KAD123",
         "Certificate Number": "CERT56789",
         "Service Year": "2025"
     }

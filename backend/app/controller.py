@@ -233,10 +233,16 @@ def nysc_request_handler(request):
         dob = data.get("dob")
 
         result = verify_nysc(callup_no, certificate_no, dob)
-
+     # --- FIX START ---
+        # Handle expected verification failures gracefully
         if not result.get("success"):
-            return jsonify({"success": False, "error": result.get("error", "NYSC verification failed")}), 500
-
+            return jsonify({
+                "success": False,
+                "error": result.get("error", "NYSC verification failed"),
+                "details": result.get("provided") or {}
+            }), 422  # use 422 instead of 500
+        # --- FIX END ---
+        
         parsed = result.get("data", {})
         # Build a user-like structure for comparison
         # We'll compare Name and Date of Birth primarily
