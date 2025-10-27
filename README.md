@@ -1,104 +1,44 @@
-# Credly
+# Verifyme
 
-This repository contains both the frontend and backend for the Credential Verification System.
-The app allows users to verify educational credentials, such as WAEC and NECO certificates,
-through the backend API. The backend integrates with external services to validate the authenticity
-of these certificates, while the frontend provides a user-friendly interface for entering document
-details and viewing verification results. The system streamlines the verification process,
-ensuring accurate and efficient validation of documents.
+erifyMe – Academic & Certificate Verification System
 
-## Table of Contents
+VerifyMe is a web-based verification system that allows users to validate academic results and service certificates such as WAEC, NECO, and NYSC in real time.
+It ensures authenticity, reduces fraud, and simplifies the verification process for institutions, employers, and individuals.
 
-- [Project Overview](#project-overview)
-- [Directory Structure](#directory-structure)
-- [Installation](#installation)
-  - [Backend Installation](#backend-installation)
-  - [Frontend Installation](#frontend-installation)
-- [Running the Project](#running-the-project)
-  - [Running the Backend](#running-the-backend)
-  - [Running the Frontend](#running-the-frontend)
+🚀 Features
+
+WAEC & NECO Verification – Validate candidates’ examination results with subject and grade comparison.
+
+NYSC Certificate Validation – Check call-up number, certificate number, and date of birth for authenticity.
+
+Smart Mismatch Detection – Highlights mismatched fields between user input and verified data.
+
+Real-time Notifications – Displays toast notifications for successful or failed verifications.
+
+Modern Interface – Built with React, Tailwind CSS, and Flask for a responsive, fast experience.
+
+🧩 Tech Stack
+
+Frontend: React.js, Tailwind CSS
+Backend: Flask (Python)
+Database: MongoDB (for future data persistence)
+Others: BeautifulSoup, Requests, Flask-CORS
+
+⚙️ Installation & Setup
+1️⃣ Clone the repository
+git clone https://github.com/your-username/verifyme.git
+cd verifyme
+
+2️⃣ Backend setup
+cd backend
+pip install -r requirements.txt
+python app.py
+
+3️⃣ Frontend setup
+cd frontend
+npm install
+npm start
 
 
-## Project Overview
-
-This project consists of two parts:
-1. **Backend**: A Flask-based API to handle document verification and process requests.
-2. **Frontend**: A React-based UI for interacting with the verification system.
-
-## Directory Structure
-
-/credly |
-├── backend/ |
-    ├── app.py │
-    ├── requirements.txt │
-    └── README.md
-└── frontend/ |
-    ├── src/
-    ├── package.json
-    └── README.md
-└── README.md
-
-
-## Installation
-
-### Backend Installation
-
-1. Navigate to the `backend` directory:
-
-    ```bash
-    cd backend
-    ```
-
-2. Install dependencies:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4. Run the main file:
-
-    ```bash
-    python app.py
-    ```
-
-### Frontend Installation
-
-1. Navigate to the `frontend` directory:
-
-    ```bash
-    cd frontend
-    ```
-
-2. Install the required dependencies:
-
-    ```bash
-    npm install
-    ```
-
-## Running the Project
-
-Ensure both the frontend and backend are set up as described above.
-
-### Running the Backend
-
-1. Start the backend server:
-
-    ```bash
-    cd backend
-    python app.py
-    ```
-
-The backend will be available at `http://127.0.0.1:5000`.
-
-### Running the Frontend
-
-2. Start the frontend server in another terminal:
-
-    ```bash
-    cd frontend
-    npm start
-    ```
-
-The frontend will be available at `http://localhost:3000`.
-
-3. Once both servers are running, you can interact with the frontend, which will make API calls to the backend.
+Then open http://localhost:3000
+ in your browser.
